@@ -1,9 +1,3 @@
-//
-//  ChatViewModel.swift
-//  LineChat
-//
-//  Created by 福田瑛斗 on 2023/10/16.
-//
 
 import Foundation
 

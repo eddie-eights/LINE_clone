@@ -8,6 +8,9 @@ struct ChatView: View {
     // フォーカス状態をTextFieldに関連づける
     @FocusState var textFieldFocused: Bool
     
+    // Nav遷移画面を閉じるハンドラーを取得
+    @Environment(\.dismiss) private var dismiss
+    
     @ObservedObject var vm: ChatViewModel = ChatViewModel()
     
     var body: some View {
@@ -84,8 +87,14 @@ extension ChatView {
     
     private var navArea :some View{
         HStack{
-            Image(systemName: "chevron.backward")
-                .font(.title2)
+            Button(action: {
+                dismiss()
+            }, label: {
+                Image(systemName: "chevron.backward")
+                    .font(.title2)
+                    .foregroundColor(.primary)
+            })
+            
             Text("Title")
                 .font(.title2.bold())
             Spacer()

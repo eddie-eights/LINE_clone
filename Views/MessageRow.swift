@@ -1,9 +1,4 @@
-//
-//  MessageRow.swift
-//  LineChat
-//
-//  Created by 福田瑛斗 on 2023/10/14.
-//
+
 
 import SwiftUI
 
