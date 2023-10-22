@@ -24,33 +24,33 @@ struct ChatView: View {
     }
 }
 
-#Preview {
-    ChatView()
-}
 
 
-extension ChatView{
+extension ChatView {
     
     private var messageArea : some View{
-        ScrollView{
-            VStack(spacing: 0) {
-                ForEach(vm.messages){ message in
-                    MessageRow(message: message)
+        ScrollViewReader { proxy in
+            ScrollView   {
+                VStack(spacing: 0) {
+                    ForEach(vm.messages){ message in
+                        MessageRow(message: message)
+                    }
                 }
+                .padding(.horizontal)
+                .padding(.top, 72)
             }
-            .padding(.horizontal)
-            .padding(.top, 72)
-            
-        }
-        .background(Color("Background"))
-        .onTapGesture {
-            textFieldFocused = false
+            .background(Color("Background"))
+            .onTapGesture {
+                textFieldFocused = false
+            }
+            .onAppear{
+                scrollToLast(proxy: proxy)
+            }
         }
     }
     
     
     private var inputArea : some View{
-        
         HStack{
             HStack {
                 Image(systemName: "plus")
@@ -75,12 +75,10 @@ extension ChatView{
             
             Image(systemName: "mic")
                 .font(.title2)
-            
         }
         .padding(.horizontal)
         .padding(.vertical, 8)
         .background(Color(uiColor: .systemBackground))
-        
     }
     
     
@@ -109,4 +107,23 @@ extension ChatView{
             inputVal = ""
         }
     }
+    
+    // 最後のメッセージまでオートスクロールする処理
+    private func scrollToLast(proxy: ScrollViewProxy){
+        if let lastMessage =  vm.messages.last{
+            proxy.scrollTo( lastMessage.id, anchor: .bottom)
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+#Preview {
+    ChatView()
 }
