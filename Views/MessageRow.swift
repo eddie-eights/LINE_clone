@@ -52,6 +52,7 @@ extension MessageRow {
             // ダークモードのとき自分の投稿は文字色を黒のままに
             .foregroundColor(message.user.isCurrentUser ? .black : .primary )
             .cornerRadius(30)
+        
     }
     
     private var messageState: some View{

@@ -5,7 +5,10 @@ struct ChatView: View {
     
     @State private var inputVal = ""
     
-    let vm: ChatViewModel = ChatViewModel()
+    // フォーカス状態をTextFieldに関連づける
+    @FocusState var textFieldFocused: Bool
+    
+    @ObservedObject var vm: ChatViewModel = ChatViewModel()
     
     var body: some View {
         VStack(spacing:0){
@@ -40,6 +43,9 @@ extension ChatView{
             
         }
         .background(Color("Background"))
+        .onTapGesture {
+            textFieldFocused = false
+        }
     }
     
     
@@ -62,6 +68,10 @@ extension ChatView{
                         .padding(.trailing)
                         .foregroundColor(.gray)
                     , alignment: .trailing)
+                .onSubmit {
+                    sendMessage(message: inputVal)
+                }
+                .focused($textFieldFocused)
             
             Image(systemName: "mic")
                 .font(.title2)
@@ -70,6 +80,7 @@ extension ChatView{
         .padding(.horizontal)
         .padding(.vertical, 8)
         .background(Color(uiColor: .systemBackground))
+        
     }
     
     
@@ -90,5 +101,12 @@ extension ChatView{
         }
         .padding()
         .background(Color("Background").opacity(0.9))
+    }
+    
+    private func sendMessage(message: String){
+        if(!inputVal.isEmpty){
+            vm.addMessage(message: message)
+            inputVal = ""
+        }
     }
 }

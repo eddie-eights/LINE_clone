@@ -8,11 +8,11 @@
 import Foundation
 
 
-class ChatViewModel {
+class ChatViewModel: ObservableObject {
     
     
     var chatData: [Chat] = []
-    var messages: [Messsage] = []
+    @Published var messages: [Messsage] = []
     
     init() {
         chatData = fetchChatData()
@@ -45,6 +45,12 @@ class ChatViewModel {
             fatalError("\(filename)を\(Chat.self)に変換できませんでした。")
         }
         
+    }
+    
+    func addMessage(message: String){
+        let newMessage = Messsage(id: UUID().uuidString, text: message, user: User.currentUser, date: Date().description, read: false)
+        messages.append(newMessage)
+    
     }
     
 }
