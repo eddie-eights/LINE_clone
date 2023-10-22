@@ -3,6 +3,8 @@ import SwiftUI
 
 struct ChatView: View {
     
+    let chat: Chat
+    
     @State private var inputVal = ""
     
     // フォーカス状態をTextFieldに関連づける
@@ -35,7 +37,7 @@ extension ChatView {
         ScrollViewReader { proxy in
             ScrollView   {
                 VStack(spacing: 0) {
-                    ForEach(vm.messages){ message in
+                    ForEach(chat.messages){ message in
                         MessageRow(message: message)
                     }
                 }
@@ -129,10 +131,7 @@ extension ChatView {
 
 
 
-
-
-
-
-#Preview {
-    ChatView()
-}
+//
+//#Preview {
+//    ChatView()
+//}

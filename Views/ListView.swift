@@ -2,13 +2,17 @@
 import SwiftUI
 
 struct ListView: View {
+    
+    @ObservedObject var vm: ChatViewModel = ChatViewModel()
+    
     var body: some View {
         
         NavigationView {
             VStack{
-                
+                // ヘッダー
                 header
                 
+                // チャットリスト
                 list
                 
             }
@@ -35,21 +39,23 @@ extension ListView {
     }
     var list: some View {
         ScrollView {
-            ForEach(0..<5){ _ in
+            ForEach(vm.chatData){ chat in
                 NavigationLink {
-                    ChatView()
+                    ChatView(chat: chat)
                         .toolbar(.hidden)
                 } label: {
-                    listRow
+                    listRow(chat: chat)
                         .foregroundColor(.primary)
                 }
-
-              
+                
+                
             }
         }
     }
     
-    var listRow: some View {
+    // 引数を受け取れるように関数コンポーネントに修正
+    // var listRow: some View {
+    private func listRow(chat: Chat) -> some View {
         HStack{
             Image("user01")
                 .resizable()
@@ -57,19 +63,17 @@ extension ListView {
                 .clipShape(Circle())
             VStack(alignment: .leading){
                 Text("名前")
-                Text("最新のメッセージ")
+                Text(chat.recentMessageText)
+                    .lineLimit(1)
                     .font(.footnote)
                     .foregroundColor(Color(uiColor: .secondaryLabel))
             }
             Spacer()
-            Text("12/24")
+            Text(chat.recentMessageDateString)
                 .font(.caption)
                 .foregroundColor(Color(uiColor: .secondaryLabel))
-            
-            
         }
     }
-    
 }
 
 
