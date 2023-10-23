@@ -4,7 +4,7 @@ import SwiftUI
 
 struct MessageRow: View {
     
-    let message: Messsage
+    let message: Message
     
     var body: some View {
         HStack(alignment: .top){
