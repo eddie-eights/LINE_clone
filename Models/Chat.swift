@@ -6,7 +6,7 @@ import Foundation
 struct Chat: Decodable, Identifiable {
     
     let id: String
-    let messages: [Messsage]
+    var messages: [Messsage]
     
     var recentMessageText: String {
         guard let lastMessage = self.messages.last else { return "" }

@@ -13,17 +13,17 @@ struct ChatView: View {
     // Nav遷移画面を閉じるハンドラーを取得
     @Environment(\.dismiss) private var dismiss
     
-    @ObservedObject var vm: ChatViewModel = ChatViewModel()
+    @EnvironmentObject var vm: ChatViewModel
     
     var body: some View {
         VStack(spacing:0){
-            // チャットエリア
+            // メッセージ表示エリア
             messageArea
             
             // ナビゲーションエリア
                 .overlay( navArea, alignment: .top)
             
-            // テキスト入力エリア
+            // メッセージ入力エリア
             inputArea
         }
     }
@@ -33,6 +33,7 @@ struct ChatView: View {
 
 extension ChatView {
     
+    // メッセージ表示エリア
     private var messageArea : some View{
         ScrollViewReader { proxy in
             ScrollView   {
@@ -55,6 +56,7 @@ extension ChatView {
     }
     
     
+    // メッセージ入力エリア
     private var inputArea : some View{
         HStack{
             HStack {
@@ -86,7 +88,7 @@ extension ChatView {
         .background(Color(uiColor: .systemBackground))
     }
     
-    
+    // ナビゲーションエリア
     private var navArea :some View{
         HStack{
             Button(action: {
@@ -112,16 +114,17 @@ extension ChatView {
         .background(Color("Background").opacity(0.9))
     }
     
-    private func sendMessage(message: String){
+    // メッセージ投稿処理
+    private func sendMessage( message: String){
         if(!inputVal.isEmpty){
-            vm.addMessage(message: message)
+            vm.addMessage(chatId: chat.id ,message: message)
             inputVal = ""
         }
     }
     
     // 最後のメッセージまでオートスクロールする処理
     private func scrollToLast(proxy: ScrollViewProxy){
-        if let lastMessage =  vm.messages.last{
+        if let lastMessage =  chat.messages.last {
             proxy.scrollTo( lastMessage.id, anchor: .bottom)
         }
     }

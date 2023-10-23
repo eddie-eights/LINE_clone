@@ -4,14 +4,10 @@ import Foundation
 
 class ChatViewModel: ObservableObject {
     
-    
-    var chatData: [Chat] = []
-    @Published var messages: [Messsage] = []
+    @Published var chatData: [Chat] = []
     
     init() {
         chatData = fetchChatData()
-        messages = chatData[0].messages
-        
     }
     
     private func fetchChatData() -> [Chat] {
@@ -41,10 +37,25 @@ class ChatViewModel: ObservableObject {
         
     }
     
-    func addMessage(message: String){
-        let newMessage = Messsage(id: UUID().uuidString, text: message, user: User.currentUser, date: Date().description, read: false)
-        messages.append(newMessage)
-    
+    func addMessage(chatId: String, message: String){
+        
+        // guard let の場合は クロージャー式は使えずwhereの引数として処理を書く
+        guard let index = chatData.firstIndex(where: { chat in
+            chat.id == chatId
+        }) else { return }
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        let formattedDateDtring = formatter.string(from: Date())
+        
+        let newMessage = Messsage(
+            id: UUID().uuidString,
+            text: message,
+            user: User.currentUser,
+            date:formattedDateDtring,
+            read: false)
+        
+        chatData[index].messages.append(newMessage)
     }
     
 }
