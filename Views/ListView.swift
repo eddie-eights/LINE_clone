@@ -25,7 +25,7 @@ extension ListView {
     
     var header: some View {
         HStack{
-            Text("タイトル")
+            Text("トーク")
                 .font(.title2.bold())
             Spacer()
             HStack(spacing: 16){
@@ -58,14 +58,25 @@ extension ListView {
     // var listRow: some View {
     private func listRow(chat: Chat) -> some View {
         HStack{
-            Image("user01")
-                .resizable()
-                .frame(width: 48, height: 48)
-                .clipShape(Circle())
+            let images = vm.getImages(messages: chat.messages)
+            HStack(spacing: -32){
+                ForEach(images, id: \.self){ image in
+                    
+                    Image(image)
+                        .resizable()
+                        .frame(width: 48, height: 48)
+                        .clipShape(Circle())
+                        .background(
+                            Circle()
+                                .foregroundColor(Color(uiColor: .systemBackground))
+                                .frame(width: 52, height: 52)
+                        )
+                }
+            }
             VStack(alignment: .leading){
                 Text(vm.getTitle(messages: chat.messages))
                     .lineLimit(1)
-                    
+                
                 Text(chat.recentMessageText)
                     .lineLimit(1)
                     .font(.footnote)
@@ -76,6 +87,7 @@ extension ListView {
                 .font(.caption)
                 .foregroundColor(Color(uiColor: .secondaryLabel))
         }
+        .padding(.vertical, 8)
     }
 }
 
@@ -83,3 +95,4 @@ extension ListView {
 #Preview {
     ListView()
 }
+

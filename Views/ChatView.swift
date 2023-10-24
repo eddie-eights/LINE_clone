@@ -99,8 +99,9 @@ extension ChatView {
                     .foregroundColor(.primary)
             })
             
-            Text("Title")
+            Text(vm.getTitle(messages: chat.messages))
                 .font(.title2.bold())
+                .lineLimit(1)
             Spacer()
             HStack(spacing:16) {
                 Image(systemName: "text.magnifyingglass")
